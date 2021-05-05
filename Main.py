@@ -4,36 +4,36 @@ import matplotlib as plt
 import tkinter as tk
 
 
-
-
 class Aplication(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.title("CSV Viewer")
+        self.title("CSV Visualizer")
 
         # Data frame for csv
-        self.data_frame = tk.LabelFrame(self,text="Data")
-        self.data_frame.place(height=600,width=900,relwidth=0.53,relheight=0.6)
+        self.data_frame = tk.LabelFrame(self, text="Data")
+        self.data_frame.place(height=600, width=900, relwidth=0.53, relheight=0.6)
+
         # Frame for buttons
-        self.file_frame = tk.LabelFrame(self,text='Buttons')
-        self.file_frame.place(height=300,width=900,rely=0.6,relx=0,relwidth=0.53,relheight=0.4)
+        self.file_frame = tk.LabelFrame(self, text='Buttons')
+        self.load_buttons(self.file_frame)
+        self.file_frame.place(height=300, width=900, rely=0.6, relx=0, relwidth=0.53, relheight=0.4)
         self.geometry("900x800")
 
+        
 
-    def open_file_dialog(self,master):
+    def open_file_dialog(self, master):
         """
         Opens the file dialog
         at the test csv files
         """
         filename = master.filename = filedialog.askopenfile(
-                    initialdir='/home/adrikos/Desktop/My_projects/Simple_Data_Visualizer/csv_files',
-                    title = 'Select a file',
-                    filetypes = (("csv files", "*.csv"),("all files", "*.*")))
+            initialdir='/home/adrikos/Desktop/My_projects/Simple_Data_Visualizer/csv_files',
+            title='Select a file',
+            filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
 
         return filename
 
-    
-    def load_data(self,master,filename):
+    def load_data(self, master, filename):
         """
         Loads csv data into a pandas dataframe
         and returns the dataframe
@@ -47,14 +47,35 @@ class Aplication(tk.Tk):
             else:
                 data_frame = None
         except ValueError:
-            master.messagebox.showerror("Information","The file you have given is invalid")
+            master.messagebox.showerror("Information", "The file you have given is invalid")
             return None
         except FileNotFoundError:
-            master.messagebox.showerror("Information",f"No file found {file_path}")
+            master.messagebox.showerror("Information", f"No file found {file_path}")
             return None
 
+    def load_buttons(self,frame):
+        """
+        Loads buttons on the File frame of the first window
+        """
+        # Open file button to get relative path of file
+        open_file_button=tk.Button(frame, text='Openfile',command=lambda:self.open_file_dialog(self))
+        open_file_button.place(height=50,width=50,relx=0,rely=0)
 
 
+
+def plot_graphs(self, master):
+    """
+    Plots grpahs in a new window
+    """
+    pass
+
+
+"""
+TODO:✅ MAKE OPEN FILE BUTTON,LOAD CSV BUTTON,SIMPLE BAR PLOT BUTTON ON THE FILE FRAME
+TODO: GIVE BUTTONS FUNCTIONALITY
+TODO: MAKE A SEARCH BAR FOR THE DATA FRAME
+TODO: GIVE ABILITY TO CHOOSE X,Y(2 COLUMNS) FOR THE GRPAHS
+"""
 
 if __name__ == "__main__":
     root = Aplication()
