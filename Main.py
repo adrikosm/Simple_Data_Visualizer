@@ -53,9 +53,9 @@ class Aplication(tk.Tk):
         """
         Loads a treeview in  the fist frame
         """
-
-        self.clear_treeview_data() 
+        self.clear_treeview_data()
         
+        # Only add a x sided scrollbar since we can use mouse scroll for y side
         treescrollx = ttk.Scrollbar(self.data_frame,
                                    orient='horizontal',
                                    command=self.data_tree_view.xview)
@@ -64,7 +64,7 @@ class Aplication(tk.Tk):
 
         treescrollx.pack(side="bottom",fill="x",expand=True)
 
-        self.data_tree_view.place(relheight=1,relwidth=1)
+        self.data_tree_view.place(relheight=1,relwidth=1) 
 
         return None
 
@@ -77,26 +77,24 @@ class Aplication(tk.Tk):
         and returns the dataframe
         """
 
-        print(self.label_file['text'])
-
-        file_path = self.label_file['text']
+        file_path = self.label_file['text'] # Get only the text part of the label file
 
         try:
             csv_filename = r"{}".format(file_path)
             if csv_filename[-4:] == ".csv":
                 data_frame = pd.read_csv(csv_filename)
-            else:
+            else:# Try excel files here
                 data_frame = None
         except ValueError:
             mb.showerror("ERROR", "The file you have given is invalid")
             return None
         except FileNotFoundError:
-            mb.showerror("ERROR", f"No file found {file_path}")
+            mb.showerror("ERROR", f"No file found at {file_path}")
             return None
         if data_frame is None:
             mb.showerror("ERROR","No file given")
 
-        self.tree_view()
+        self.tree_view() # Activates the tree view 
 
         self.data_tree_view['column'] = list(data_frame)
         self.data_tree_view['show'] = "headings"
@@ -105,7 +103,7 @@ class Aplication(tk.Tk):
         for column in self.data_tree_view['columns']:
             self.data_tree_view.heading(column,text=column)
         
-        data_frame_rows = data_frame.to_numpy().tolist()
+        data_frame_rows = data_frame.to_numpy().tolist() 
         for rows in data_frame_rows:
             self.data_tree_view.insert("","end",values=rows)
 
