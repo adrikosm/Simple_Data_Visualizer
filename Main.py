@@ -33,11 +33,12 @@ class Aplication(tk.Tk):
 
         return filename
 
-    def load_data(self, master, filename):
+    def load_data(self, filename):
         """
         Loads csv data into a pandas dataframe
         and returns the dataframe
         """
+        print(filename)
         file_path = filename
         try:
             csv_filename = r"{}".format(file_path)
@@ -47,20 +48,27 @@ class Aplication(tk.Tk):
             else:
                 data_frame = None
         except ValueError:
-            master.messagebox.showerror("Information", "The file you have given is invalid")
+            tk.messagebox.showerror("Information", "The file you have given is invalid")
             return None
         except FileNotFoundError:
-            master.messagebox.showerror("Information", f"No file found {file_path}")
+            tk.messagebox.showerror("Information", f"No file found {file_path}")
             return None
+        if data_frame == None:
+            tk.messagebox.showerror("Information","No File Given")
 
     def load_buttons(self,frame):
         """
         Loads buttons on the File frame of the first window
         """
         # Open file button to get relative path of file
-        open_file_button=tk.Button(frame, text='Openfile',command=lambda:self.open_file_dialog(self))
-        open_file_button.place(height=50,width=50,relx=0,rely=0)
+        open_file_button=tk.Button(frame, text='Open File',
+        command=lambda:self.open_file_dialog(self))
+        open_file_button.place(height=80,width=80,relx=0,rely=0)
 
+        # Load file button to get access to data
+        load_file_button = tk.Button(frame,text='Load File',
+        command=lambda:self.load_data(open_file_button))
+        load_file_button.place(height=80,width=80,relx=0.11,rely=0)
 
 
 def plot_graphs(self, master):
@@ -75,6 +83,7 @@ TODO:✅ MAKE OPEN FILE BUTTON,LOAD CSV BUTTON,SIMPLE BAR PLOT BUTTON ON THE FIL
 TODO: GIVE BUTTONS FUNCTIONALITY
 TODO: MAKE A SEARCH BAR FOR THE DATA FRAME
 TODO: GIVE ABILITY TO CHOOSE X,Y(2 COLUMNS) FOR THE GRPAHS
+TODO: MAKE A TREEVIEW ON THE DATA FRAME
 """
 
 if __name__ == "__main__":
