@@ -4,28 +4,58 @@ import matplotlib as plt
 import tkinter as tk
 
 
+
+
 class Aplication(tk.Tk):
     def __init__(self):
         super().__init__()
         self.title("CSV Viewer")
-        self.main_frame = tk.Frame(self)
-        self.main_frame.pack(fill="both", expand="true")
+        
+        # Data frame for csv
+        self.data_frame = tk.LabelFrame(self,text="Data")
+        self.data_frame.place(height=600,width=900,relwidth=0.53,relheight=0.6)
+        # Frame for buttons
+        self.file_frame = tk.LabelFrame(self,text='Buttons')
+        self.file_frame.place(height=300,width=900,rely=0.6,relx=0,relwidth=0.53,relheight=0.4)
         self.geometry("900x800")
 
-def open_file_dialog():
+
+    def open_file_dialog(self,master):
+        """
+        Opens the file dialog
+        at the test csv files
+        """
+        filename = master.filename = filedialog.askopenfile(
+                    initialdir='/home/adrikos/Desktop/My_projects/Simple_Data_Visualizer/csv_files',
+                    title = 'Select a file',
+                    filetypes = (("csv files", "*.csv"),("all files", "*.*")))
+
+        return filename
+
+
+def load_data(file_name):
     """
-    Opens the file dialog
-    For now it does not return anything
+    Loads csv data into a pandas dataframe
+    and returns the dataframe
     """
-    root.filename = filedialog.askopenfilename(initialdir="/home/adrikos/Desktop/My_projects/Simple_Data_Visualizer/csv_files", 
-                                           title="Select A File", 
-                                           filetypes=(("csv files", "*.csv"),
-                                           ("all files", "*.*")))
+    file_path = file_name
+    try:
+        csv_filename = r"{}".format(file_path)
+        if csv_filename[-4:] == ".csv":
+            df = pd.read_csv(csv_filename)
+            return df
+        else:
+            df = None
+    except ValueError:
+        tk.messagebox.showerror("Information","The file you have given is invalid")
+        return None
+    except FileNotFoundError:
+        tk.messagebox.showerror("Information",f"No file found {file_path}")
+        return None
 
 
 
 
 if __name__ == "__main__":
     root = Aplication()
-    tk.Button(root,text='Open File',command=open_file_dialog).pack()
     root.mainloop()
